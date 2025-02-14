@@ -209,17 +209,5 @@ npm start
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
----
-
-## 🌟 Team Members
-
-- **Gaurav Pandey** - Backend Developer
-- **Yashika Tomar** - Weather Module Developer
-- **Divya Mudgil** - Scheme Recommendation Developer
-- **Meet Axar** - Frontend Developer
-
----
-
-*Note: Ensure that all modules are properly integrated and tested for seamless functionality.*
 
 --- 
