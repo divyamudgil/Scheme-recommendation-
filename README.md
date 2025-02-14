@@ -185,19 +185,19 @@ npm start
 
 `POST /api/farmer/register` - Register a new farmer.
 
-### Scheme Recommendations
+### Scheme Recommendations  (for next implementation step)
 
 `GET /api/schemes` - Retrieve personalized scheme recommendations.
 
-### Loan Options
+### Loan Options  (for next implementation step)
 
 `GET /api/loans` - Fetch available loan options.
 
 ### Weather Forecast
 
-`GET /api/weather` - Get current weather and forecasts.
+`(http://api.openweathermap.org/data/2.5/weather?q=London&appid=your_api_key)` - Get current weather and forecasts.
 
-### Crop Suggestions
+### Crop Suggestions   (for next implementation step)
 
 `GET /api/crops` - Receive crop cultivation suggestions.
 
