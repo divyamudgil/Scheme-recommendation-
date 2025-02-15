@@ -2,7 +2,7 @@ import firebase_admin
 from firebase_admin import credentials, firestore
 
 # Initialize Firebase
-cred = credentials.Certificate("/Users/divyamudgil01/Desktop/firebase_uploader/scheme-reccomendation-module-firebase-adminsdk-fbsvc-3706b445b2.json")
+cred = credentials.Certificate("/Users/divyamudgil01/Downloads/scheme-reccomendation-module-firebase-adminsdk-fbsvc-a6ecc00c31.json")
 firebase_admin.initialize_app(cred)
 db = firestore.client()
 
@@ -13,7 +13,6 @@ def fetch_schemes(user_input):
     :param user_input: Dictionary containing user attributes (land_size, income, category, etc.)
     :return: List of matching schemes
     """
-    
     schemes_ref = db.collection("schemes")
     query = schemes_ref  # Start with base collection
 
@@ -58,14 +57,22 @@ def fetch_schemes(user_input):
 # Example Usage
 user_input = {
     "category": "Agriculture",
-    "land_size": 10,  # User has 3 hectares of land
+    "land_size": 1,  # User has 10 hectares of land
     "income": 50000,  # Annual income
     "aadhaar_available": True,
     "is_govt_employee": False,
     "state": "Odisha"
 }
 
-matched_schemes = fetch_schemes(user_input)
+try:
+    matched_schemes = fetch_schemes(user_input)
+    if not matched_schemes:
+        print("No matching schemes found for the given input.")
+    for scheme in matched_schemes:
+        print(f"✅ {scheme['name']} - {scheme['benefits']}")
+except Exception as e:
+    print(f"Error occurred: {e}")
 
-for scheme in matched_schemes:
-    print(f"✅ {scheme['name']} - {scheme['benefits']}")
+#collections = db.collections()
+#print("Available collections:", [collection.id for collection in collections])
+
