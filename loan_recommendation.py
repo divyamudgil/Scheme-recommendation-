@@ -13,7 +13,6 @@ def fetch_loans(user_input):
     :param user_input: Dictionary containing user attributes (land_size, income, state, etc.)
     :return: List of ranked applicable loan schemes
     """
-
     loans_ref = db.collection("loans")
     results = loans_ref.stream()
     applicable_loans = []
@@ -47,21 +46,36 @@ def fetch_loans(user_input):
         if not isinstance(applicable_states, list):
             applicable_states = []
 
-        if "state" in user_input and user_input["state"] not in applicable_states and "All" not in applicable_states:
+        if "state" in user_input and user_input["state"] not in applicable_states and "All States" not in applicable_states:
             continue  
+
+        # Calculate profitability score (Loan Amount / Interest Rate)
+        loan_amount = loan_data.get("loan_amount", 0)
+        interest_rate = loan_data.get("interest_rate", 0)
+
+        if interest_rate > 0:
+            profitability_score = loan_amount / interest_rate
+        else:
+            # If interest rate is 0, set a very high score to prioritize such loans
+            profitability_score = float('inf')
+
+        loan_data["profitability_score"] = profitability_score
 
         # Store eligible loan
         applicable_loans.append(loan_data)
+
+    # Sort loans by profitability score (highest score first)
+    applicable_loans.sort(key=lambda x: x.get("profitability_score", 0), reverse=True)
 
     return applicable_loans
 
 # Example Input: Farmer Details
 user_input = {
-    "land_size": 2,  # 2 hectares
-    "income": 45000,  # Annual income
+    "land_size": 100,  # 2 hectares
+    "income": 7000000,  # Annual income
     "aadhaar_available": True,
     "is_govt_employee": False,
-    "state": "Odisha"
+    "state": "Andhra Pradesh"
 }
 
 # Get applicable loans
@@ -74,6 +88,8 @@ if applicable_loans:
         print(f"🏆 {i}. {loan.get('name', 'Unknown')}")
         print(f"   💰 Loan Amount: ₹{loan.get('loan_amount', 'N/A')}")
         print(f"   📉 Interest Rate: {loan.get('interest_rate', 'N/A')}%")
+        print(f"   🌟 Profitability Score: {loan.get('profitability_score', 'N/A'):.2f}")
         print("-" * 40)
 else:
     print("❌ No applicable loan schemes found for your criteria.")
+
